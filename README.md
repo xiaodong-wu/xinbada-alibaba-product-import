@@ -56,3 +56,7 @@ python3 skills/xinbada-alibaba-product-import/scripts/validate_output.py \
   --images-dir /absolute/path/to/images \
   --require-images
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).
