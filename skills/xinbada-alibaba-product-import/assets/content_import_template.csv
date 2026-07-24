@@ -1,0 +1,1065 @@
+title,remark,thumb,content,seo_title1,seo_desc,file_name,link,template,parameter
+,,,,,,,https://www.alibaba.com/product-detail/Lifeworth-Creatine-HCL-Monohydrate-Powder-Adult_1601686777910.html?spm=a2700.shop_plgr.41413.31.54b25aceiip0ll,"<!--
+PRODUCT DETAIL ONLY — NO PRODUCT GALLERY
+Brand: Xinbada
+Company: Xinbada Industrial (Shenzhen) Group Co., Ltd.
+Source layout and colors retained from the second-version product page.
+The first pd_section is_soft image link and the Creatine HCl Powder & Supplement Facts company section are unchanged.
+-->
+<style type=""text/css"">/*
+  PRODUCT DETAIL V2 — RICH TEXT EDITOR VERSION
+
+  EDITING GUIDE
+  - Replace images: change only src and alt in the numbered IMAGE comments.
+  - Replace text: edit h2, h3, p, li, and span content.
+  - Duplicate/remove modules: copy or delete a complete EDITABLE BLOCK.
+  - No JavaScript, external fonts, or page-level styles are required.
+  - Every style is scoped to .product_detail_box.
+*/
+
+.product_detail_box {
+  --pd-green: #304c3b;
+  --pd-green-2: #3d6850;
+  --pd-accent: #45b36b;
+  --pd-text: #5d6b7f;
+  --pd-copy: #4a6558;
+  --pd-line: #dcefe4;
+  --pd-soft: #f4f8f6;
+  --pd-panel: #f5f7fa;
+  --pd-white: #ffffff;
+  color: var(--pd-text);
+  background: var(--pd-white);
+  font-family: ""Poppins"", ""Segoe UI"", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.product_detail_box *,
+.product_detail_box *::before,
+.product_detail_box *::after {
+  box-sizing: border-box;
+}
+
+.product_detail_box .pd_container {
+  width: min(100% - 40px, 1352px);
+  margin: 0 auto;
+}
+
+.product_detail_box .pd_section {
+  padding: 78px 0;
+}
+
+.product_detail_box .pd_section.is_soft {
+  background: var(--pd-soft);
+}
+
+.product_detail_box h2,
+.product_detail_box h3,
+.product_detail_box p,
+.product_detail_box ul {
+  margin-top: 0;
+}
+
+.product_detail_box h2,
+.product_detail_box h3 {
+  color: var(--pd-green);
+  font-family: inherit;
+}
+
+.product_detail_box h2 {
+  margin-bottom: 12px;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.22;
+}
+
+.product_detail_box h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.product_detail_box p {
+  margin-bottom: 14px;
+  color: var(--pd-copy);
+}
+
+.product_detail_box ul {
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+.product_detail_box li {
+  margin-bottom: 7px;
+  line-height: 1.65;
+}
+
+.product_detail_box li:last-child,
+.product_detail_box p:last-child {
+  margin-bottom: 0;
+}
+
+.product_detail_box strong {
+  color: #425b4c;
+  font-weight: 700;
+}
+
+.product_detail_box img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  color: transparent;
+  font-size: 0;
+}
+
+.product_detail_box .pd_kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+  color: var(--pd-accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.product_detail_box .pd_kicker::before {
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: currentColor;
+  content: """";
+}
+
+.product_detail_box .pd_section_head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1.2fr);
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 38px;
+}
+
+.product_detail_box .pd_section_head > p {
+  max-width: 720px;
+  margin: 0;
+}
+
+.product_detail_box .pd_section_head.is_centered {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto 38px;
+  text-align: center;
+}
+
+.product_detail_box .pd_section_head.is_centered > p {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* 01 — New product overview: one image, one story, one specification strip. */
+.product_detail_box .pd_overview_grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--pd-white);
+  box-shadow: 0 18px 50px rgba(48, 76, 59, 0.07);
+}
+
+.product_detail_box .pd_overview_media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 570px;
+}
+
+.product_detail_box .pd_overview_media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product_detail_box .pd_overview_copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 54px 52px;
+}
+
+.product_detail_box .pd_overview_copy h2 {
+  max-width: 520px;
+  margin-bottom: 18px;
+  font-size: 38px;
+}
+
+.product_detail_box .pd_overview_copy > p {
+  margin-bottom: 18px;
+}
+
+.product_detail_box .pd_overview_copy > p + p {
+  padding-top: 18px;
+  border-top: 1px solid var(--pd-line);
+}
+
+.product_detail_box .pd_spec_strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 26px;
+  border: 1px solid var(--pd-line);
+  border-radius: 12px;
+  background: var(--pd-soft);
+}
+
+.product_detail_box .pd_spec_item {
+  padding: 17px 14px;
+  border-right: 1px solid var(--pd-line);
+  text-align: center;
+}
+
+.product_detail_box .pd_spec_item:last-child {
+  border-right: 0;
+}
+
+.product_detail_box .pd_spec_item span {
+  display: block;
+  margin-bottom: 3px;
+  color: #718078;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.product_detail_box .pd_spec_item strong {
+  display: block;
+  color: var(--pd-green);
+  font-size: 14px;
+}
+
+/* 02 — Customization: editorial sidebar plus parameter rows. */
+.product_detail_box .pd_custom_layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.45fr);
+  gap: 70px;
+  align-items: start;
+}
+
+.product_detail_box .pd_custom_intro {
+  padding-right: 10px;
+}
+
+.product_detail_box .pd_custom_intro h2 {
+  margin-bottom: 16px;
+}
+
+.product_detail_box .pd_mini_gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 28px;
+}
+
+.product_detail_box .pd_mini_image {
+  overflow: hidden;
+  aspect-ratio: 4 / 4;
+  border: 1px solid var(--pd-line);
+  border-radius: 10px;
+}
+
+.product_detail_box .pd_mini_image img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.product_detail_box .pd_parameter_list {
+  border-top: 1px solid #bfdac9;
+}
+
+.product_detail_box .pd_parameter_row {
+  display: grid;
+  grid-template-columns: 48px minmax(150px, 0.45fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--pd-line);
+}
+
+.product_detail_box .pd_parameter_no {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid #b7d7c3;
+  border-radius: 50%;
+  color: #3f9660;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.product_detail_box .pd_parameter_row h3 {
+  margin: 3px 0 0;
+  font-size: 16px;
+}
+
+.product_detail_box .pd_parameter_row p {
+  margin: 2px 0 0;
+  color: var(--pd-text);
+}
+
+/* 03 — Formula architecture: consistent six-card grid. */
+.product_detail_box .pd_formula_board {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.product_detail_box .pd_formula_item {
+  grid-column: span 4;
+  min-height: 175px;
+  padding: 26px;
+  border: 1px solid var(--pd-line);
+  border-radius: 14px;
+  background: var(--pd-white);
+}
+
+.product_detail_box .pd_formula_label {
+  display: block;
+  margin-bottom: 28px;
+  color: #65bc82;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product_detail_box .pd_formula_item h3 {
+  font-size: 17px;
+}
+
+.product_detail_box .pd_formula_item p {
+  margin: 0;
+  color: var(--pd-text);
+  font-size: 14.5px;
+}
+
+/* 04 — OEM service: a process timeline, not four identical feature cards. */
+.product_detail_box .pd_process {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.product_detail_box .pd_process_step {
+  position: relative;
+  min-height: 260px;
+  padding: 38px 28px 28px;
+  text-align: center;
+}
+
+.product_detail_box .pd_process_no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 42px;
+  border-radius: 50%;
+  color: var(--pd-white);
+  background: var(--pd-accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.product_detail_box .pd_process_step h3 {
+  font-size: 18px;
+}
+
+.product_detail_box .pd_process_step p {
+  margin: 0;
+  color: var(--pd-text);
+  font-size: 14.5px;
+}
+
+/* 05 — Product evidence: one editorial feature plus three compact stories. */
+.product_detail_box .pd_story_feature {
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(380px, 1.06fr);
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 18px;
+  background: var(--pd-white);
+  box-shadow: 0 20px 55px rgba(26, 66, 43, 0.09);
+}
+
+.product_detail_box .pd_story_feature_image {
+  position: relative;
+  min-height: 540px;
+  overflow: hidden;
+  background: #eaf4ee;
+}
+
+.product_detail_box .pd_story_feature_image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+}
+
+.product_detail_box .pd_story_feature_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 52px clamp(38px, 4vw, 64px);
+}
+
+.product_detail_box .pd_story_feature_content .pd_kicker {
+  margin-bottom: 14px;
+}
+
+.product_detail_box .pd_story_feature_content h3 {
+  max-width: 650px;
+  margin-bottom: 20px;
+  font-size: clamp(27px, 2.4vw, 36px);
+  line-height: 1.2;
+}
+
+.product_detail_box .pd_story_feature_content > p {
+  margin-bottom: 0;
+  color: var(--pd-text);
+}
+
+.product_detail_box .pd_company_metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  margin: 28px 0;
+  border: 1px solid var(--pd-line);
+  border-radius: 13px;
+  background: var(--pd-line);
+}
+
+.product_detail_box .pd_company_metric {
+  padding: 17px 18px;
+  background: #f5faf7;
+}
+
+.product_detail_box .pd_company_metric strong,
+.product_detail_box .pd_company_metric span {
+  display: block;
+}
+
+.product_detail_box .pd_company_metric strong {
+  margin-bottom: 3px;
+  color: var(--pd-green);
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.product_detail_box .pd_company_metric span {
+  color: var(--pd-muted);
+  font-size: 12px;
+}
+
+.product_detail_box .pd_story_feature_content .pd_company_closing {
+  padding: 17px 20px;
+  border-left: 3px solid var(--pd-accent);
+  color: #315c40;
+  background: #eef7f1;
+  font-weight: 600;
+}
+
+.product_detail_box .pd_story_tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.product_detail_box .pd_story_tile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--pd-line);
+  border-radius: 16px;
+  background: var(--pd-white);
+  box-shadow: 0 12px 32px rgba(26, 66, 43, 0.06);
+}
+
+.product_detail_box .pd_story_tile_image {
+  display: flex;
+  align-items: center;
+  aspect-ratio: 1000 / 1294;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--pd-line);
+  background: #eaf4ee;
+}
+
+.product_detail_box .pd_story_tile_image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product_detail_box .pd_story_tile_content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 164px;
+  padding: 25px 24px 28px;
+}
+
+.product_detail_box .pd_story_tag {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--pd-accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.product_detail_box .pd_story_tile_content h3 {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.product_detail_box .pd_story_tile_content p {
+  margin: 0;
+  color: var(--pd-text);
+  font-size: 14.5px;
+}
+
+/* 06 — FAQ: responsive question-and-answer cards. */
+.product_detail_box .pd_faq_grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.product_detail_box .pd_faq_item {
+  position: relative;
+  padding: 28px 28px 28px 72px;
+  border: 1px solid var(--pd-line);
+  border-radius: 15px;
+  background: var(--pd-white);
+  box-shadow: 0 10px 30px rgba(48, 76, 59, 0.05);
+}
+
+.product_detail_box .pd_faq_no {
+  position: absolute;
+  top: 27px;
+  left: 25px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--pd-white);
+  background: var(--pd-accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.product_detail_box .pd_faq_item h3 {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.product_detail_box .pd_faq_item p {
+  margin: 0;
+  color: var(--pd-text);
+  font-size: 14.5px;
+}
+
+@media (max-width: 991px) {
+  .product_detail_box .pd_section {
+    padding: 60px 0;
+  }
+
+  .product_detail_box .pd_section_head {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product_detail_box .pd_overview_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_overview_media {
+    min-height: 460px;
+  }
+
+  .product_detail_box .pd_custom_layout {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .product_detail_box .pd_mini_gallery {
+    max-width: 620px;
+  }
+
+  .product_detail_box .pd_formula_item {
+    grid-column: span 6;
+  }
+
+  .product_detail_box .pd_process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product_detail_box .pd_story_feature {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_story_feature_image {
+    min-height: 430px;
+  }
+
+  .product_detail_box .pd_faq_grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .product_detail_box {
+    font-size: 15px;
+  }
+
+  .product_detail_box .pd_container {
+    width: min(100% - 30px, 1352px);
+  }
+
+  .product_detail_box .pd_section {
+    padding: 46px 0;
+  }
+
+  .product_detail_box h2,
+  .product_detail_box .pd_overview_copy h2 {
+    font-size: 28px;
+  }
+
+  .product_detail_box .pd_overview_media {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    padding: 14px;
+  }
+
+  .product_detail_box .pd_overview_copy {
+    padding: 30px 22px;
+  }
+
+  .product_detail_box .pd_spec_strip {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_spec_item {
+    border-right: 0;
+    border-bottom: 1px solid var(--pd-line);
+  }
+
+  .product_detail_box .pd_spec_item:last-child {
+    border-bottom: 0;
+  }
+
+  .product_detail_box .pd_mini_gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_parameter_row {
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+  }
+
+  .product_detail_box .pd_parameter_row p {
+    grid-column: 2;
+  }
+
+  .product_detail_box .pd_formula_board {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_formula_item {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 0;
+  }
+
+  .product_detail_box .pd_process {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_process_step {
+    min-height: 0;
+    padding: 28px 0;
+  }
+
+  .product_detail_box .pd_process_no {
+    margin-bottom: 24px;
+  }
+
+  .product_detail_box .pd_story_feature_image {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .product_detail_box .pd_story_feature_image img {
+    height: 100%;
+  }
+
+  .product_detail_box .pd_story_feature_content {
+    padding: 28px 22px 30px;
+  }
+
+  .product_detail_box .pd_story_feature_content h3 {
+    font-size: 25px;
+  }
+
+  .product_detail_box .pd_company_metrics {
+    margin: 23px 0;
+  }
+
+  .product_detail_box .pd_company_metric {
+    padding: 14px;
+  }
+
+  .product_detail_box .pd_story_tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .product_detail_box .pd_story_tile_content {
+    min-height: 0;
+  }
+
+  .product_detail_box .pd_faq_item {
+    padding: 24px 20px 24px 62px;
+  }
+
+  .product_detail_box .pd_faq_no {
+    top: 23px;
+    left: 20px;
+  }
+}
+</style>
+<div class=""product_detail_box""><!-- 01 PRODUCT OVERVIEW -->
+<section class=""pd_section"">
+<div class=""pd_container"">
+<div class=""pd_overview_grid"">
+<div class=""pd_overview_media""><!-- IMAGE 01: replace src and alt only. --><img alt=""Xinbada Creatine HCl pineapple powder product presentation"" src=""/res/lhs/images/creatine-hcl-product-hero-v2.jpg"" /></div>
+
+<div class=""pd_overview_copy""><span class=""pd_kicker"">Xinbada / OEM</span>
+
+<h2>Creatine HCl Powder</h2>
+
+<p><strong>Easily Absorbed Creatine</strong></p>
+
+<p>7X Concentrated VS Monohydrate</p>
+
+<div class=""pd_spec_strip""><!-- EDITABLE BLOCK: change the label and value inside each item. -->
+<div class=""pd_spec_item""><span>Flavor</span><strong>Pineapple</strong></div>
+
+<div class=""pd_spec_item""><span>Servings</span><strong>64 Servings</strong></div>
+
+<div class=""pd_spec_item""><span>Net Weight</span><strong>2.2 OZ (61.4g)</strong></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 02 CUSTOMIZATION PARAMETERS -->
+
+<section class=""pd_section is_soft"">
+<div class=""pd_container"">
+<div class=""pd_custom_layout"">
+<div class=""pd_custom_intro""><span class=""pd_kicker"">Creatine Hydrochloride</span>
+
+<h2>Why Creatine HCl Is the Advanced Choice</h2>
+
+<div class=""pd_mini_gallery"">
+<div class=""pd_mini_image""><!-- IMAGE 02: single large image --><img src=""/uploadfile/2026/06/17/20260617204303tBFyK9.webp"" style=""max-width: 100%;"" /></div>
+</div>
+</div>
+
+<div class=""pd_parameter_list""><!-- EDITABLE BLOCK: duplicate or remove a complete pd_parameter_row. -->
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">01</span>
+
+<h3>Superior Solubility</h3>
+
+<p>Creatine hydrochloride offers superior solubility.</p>
+</div>
+
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">02</span>
+
+<h3>High Absorption Rate</h3>
+
+<p>Designed for a high absorption rate.</p>
+</div>
+
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">03</span>
+
+<h3>&lt;1g to Be Effective</h3>
+
+<p>Less than 1g to be effective.</p>
+</div>
+
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">04</span>
+
+<h3>Gentle on Stomach</h3>
+
+<p>A stomach-friendly creatine choice.</p>
+</div>
+
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">05</span>
+
+<h3>Creatine Monohydrate</h3>
+
+<p>Low solubility, low absorption rate, and 5g to be effective.</p>
+</div>
+
+<div class=""pd_parameter_row""><span class=""pd_parameter_no"">06</span>
+
+<h3>May Cause Bloating</h3>
+
+<p>Creatine monohydrate may cause bloating.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 03 FORMULA ARCHITECTURE -->
+
+<section class=""pd_section"">
+<div class=""pd_container"">
+<div class=""pd_section_head is_centered"">
+<div><span class=""pd_kicker"">Xinbada / OEM</span>
+
+<h2>Creatine HCl Powder</h2>
+</div>
+
+<p>Easily absorbed creatine, 7X concentrated VS monohydrate, naturally flavored and sweetened.</p>
+</div>
+
+<div class=""pd_formula_board""><!-- EDITABLE BLOCK: main formula statement. -->
+<article class=""pd_formula_item""><span class=""pd_formula_label"">01 / Product</span>
+
+<h3>Creatine HCl Powder</h3>
+
+<p>Easily absorbed creatine.</p>
+</article>
+
+<article class=""pd_formula_item""><span class=""pd_formula_label"">02 / Concentration</span>
+
+<h3>7X Concentrated</h3>
+
+<p>7X concentrated VS monohydrate.</p>
+</article>
+
+<article class=""pd_formula_item""><span class=""pd_formula_label"">03 / Flavor</span>
+
+<h3>Pineapple</h3>
+
+<p>Naturally flavored and sweetened.</p>
+</article>
+
+<article class=""pd_formula_item""><span class=""pd_formula_label"">04 / Category</span>
+
+<h3>Dietary Supplement</h3>
+
+<p>Creatine hydrochloride dietary supplement.</p>
+</article>
+
+<article class=""pd_formula_item""><span class=""pd_formula_label"">05 / Servings</span>
+
+<h3>64 Servings</h3>
+
+<p>Serving size: 1 scoop (960mg).</p>
+</article>
+
+<article class=""pd_formula_item""><span class=""pd_formula_label"">06 / Net Weight</span>
+
+<h3>2.2 OZ (61.4g)</h3>
+
+<p>64 servings per container.</p>
+</article>
+</div>
+</div>
+</section>
+<!-- 04 OEM / ODM PROCESS -->
+
+<section class=""pd_section is_soft"">
+<div class=""pd_container"">
+<div class=""pd_section_head is_centered"">
+<div><span class=""pd_kicker"">Creatine Hydrochloride (HCl)</span>
+
+<h2>Performance Benefits</h2>
+</div>
+
+<p>Creatine HCl supports strength, muscle volume, high-intensity performance, and recovery.</p>
+</div>
+
+<div class=""pd_process""><!-- EDITABLE BLOCK: one process step. -->
+<article class=""pd_process_step""><span class=""pd_process_no"">01</span>
+
+<h3>Enhanced Strength &amp; Power</h3>
+
+<p>Supports enhanced strength and power.</p>
+</article>
+
+<article class=""pd_process_step""><span class=""pd_process_no"">02</span>
+
+<h3>Increased Muscle Volume</h3>
+
+<p>Supports increased muscle volume.</p>
+</article>
+
+<article class=""pd_process_step""><span class=""pd_process_no"">03</span>
+
+<h3>Improved High-Intensity Performance</h3>
+
+<p>Supports improved high-intensity performance.</p>
+</article>
+
+<article class=""pd_process_step""><span class=""pd_process_no"">04</span>
+
+<h3>Faster Recovery</h3>
+
+<p>Supports faster recovery.</p>
+</article>
+</div>
+</div>
+</section>
+<!-- 05 PRODUCT EVIDENCE -->
+
+<section class=""pd_section"">
+<div class=""pd_container"">
+<div class=""pd_section_head is_centered"">
+<div><span class=""pd_kicker"">Product Details</span>
+
+<h2>Creatine HCl Powder &amp; Supplement Facts</h2>
+</div>
+
+<p>Review the product presentation, performance benefits, supplement facts, ingredients, and manufacturing certifications.</p>
+</div>
+
+<article class=""pd_story_feature"">
+<div class=""pd_story_feature_image""><!-- IMAGE 03: company or factory image. --><img alt=""Xinbada health supplement manufacturing facility"" src=""/uploadfile/2026/06/24/20260624083728jsNTAR.webp"" /></div>
+
+<div class=""pd_story_feature_content""><span class=""pd_kicker"">About Xinbada</span>
+
+<h3>Xinbada: Global Leader in Health Supplement Manufacturing</h3>
+
+<p>Xinbada, established on March 25, 2013, is a leading health supplement R&amp;D and manufacturer with 13 years of expertise. Headquartered in Shenzhen, the company operates self-owned production facilities exceeding 10,000 square meters with over 200 employees, featuring 10,000-class clean rooms and GMP-standard production workshops for enhanced quality assurance.</p>
+
+<div class=""pd_company_metrics""><!-- EDITABLE BLOCK: company metric. -->
+<div class=""pd_company_metric""><strong>13 Years</strong><span>R&amp;D and Manufacturing</span></div>
+
+<div class=""pd_company_metric""><strong>10,000m&sup2;+</strong><span>Self-Owned Facilities</span></div>
+
+<div class=""pd_company_metric""><strong>200+</strong><span>Professional Employees</span></div>
+
+<div class=""pd_company_metric""><strong>70%</strong><span>Overseas Business Reach</span></div>
+</div>
+
+<p class=""pd_company_closing"">We don&#39;t just manufacture&mdash;we collaborate. Serving 100K+ brands, Xinbada is the silent force behind global wellness success stories.</p>
+</div>
+</article>
+
+<div class=""pd_story_tiles""><!-- EDITABLE BLOCK: compact product story. -->
+<article class=""pd_story_tile"">
+<div class=""pd_story_tile_image""><!-- IMAGE 04 --><img alt=""Xinbada laboratory technician operating sterilization equipment"" src=""/res/lhs/images/laboratory-autoclave-portrait.jpg"" /></div>
+
+<div class=""pd_story_tile_content""><span class=""pd_story_tag"">LIFEWORTH / OEM</span>
+
+<h3>Creatine HCl Powder</h3>
+
+<p>Easily absorbed creatine. 7X concentrated VS monohydrate. Pineapple, naturally flavored and sweetened. 64 servings, net wt 2.2 OZ (61.4g).</p>
+</div>
+</article>
+
+<article class=""pd_story_tile"">
+<div class=""pd_story_tile_image""><!-- IMAGE 05 --><img alt=""Xinbada quality control specialists working in the laboratory"" src=""/res/lhs/images/quality-control-lab-portrait.jpg"" /></div>
+
+<div class=""pd_story_tile_content""><span class=""pd_story_tag"">Creatine Hydrochloride (HCl)</span>
+
+<h3>Performance Benefits</h3>
+
+<p>Enhanced strength &amp; power, increased muscle volume, improved high-intensity performance, and faster recovery.</p>
+</div>
+</article>
+
+<article class=""pd_story_tile"">
+<div class=""pd_story_tile_image""><!-- IMAGE 06 --><img alt=""FDA registration certificate for supplement manufacturing"" src=""/uploadfile/2026/07/14/20260714124831v0uPU7.webp"" /></div>
+
+<div class=""pd_story_tile_content""><span class=""pd_story_tag"">Supplement Facts</span>
+
+<h3>750mg Creatine HCl Per Serving</h3>
+
+<p>Serving size: 1 scoop (960mg). 64 servings per container. Other ingredients: natural flavors and Stevia rebaudiana leaf extract. GMP, NSF, FSSC 22000, and HACCP.</p>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- 06 FREQUENTLY ASKED QUESTIONS -->
+
+<section class=""pd_section is_soft"">
+<div class=""pd_container"">
+<div class=""pd_section_head is_centered"">
+<div><span class=""pd_kicker"">Frequently Asked Questions</span>
+
+<h2>Creatine HCl Powder FAQ</h2>
+</div>
+
+<p>Find quick answers about the formula, serving size, product benefits, ingredients, and private label service.</p>
+</div>
+
+<div class=""pd_faq_grid"">
+<article class=""pd_faq_item""><span class=""pd_faq_no"">01</span>
+
+<h3>What Is Creatine HCl Powder?</h3>
+
+<p>Creatine HCl Powder is a highly soluble form of creatine designed for convenient daily use. This pineapple-flavored formula provides 750mg of Creatine HCl in each 960mg serving.</p>
+</article>
+
+<article class=""pd_faq_item""><span class=""pd_faq_no"">02</span>
+
+<h3>How Many Servings Are Included in Each Bottle?</h3>
+
+<p>Each bottle contains 64 servings. The serving size is one scoop (960mg), and the total net weight is 2.2 OZ (61.4g).</p>
+</article>
+
+<article class=""pd_faq_item""><span class=""pd_faq_no"">03</span>
+
+<h3>What Are the Main Benefits of Creatine HCl?</h3>
+
+<p>Creatine HCl is formulated to support enhanced strength and power, increased muscle volume, improved high-intensity exercise performance, and faster post-workout recovery.</p>
+</article>
+
+<article class=""pd_faq_item""><span class=""pd_faq_no"">04</span>
+
+<h3>How Is Creatine HCl Different from Creatine Monohydrate?</h3>
+
+<p>Creatine HCl offers superior solubility, a high absorption rate, and a compact serving of less than 1g. It is designed to be gentle on the stomach and may suit consumers concerned about bloating associated with creatine monohydrate.</p>
+</article>
+
+<article class=""pd_faq_item""><span class=""pd_faq_no"">05</span>
+
+<h3>What Ingredients and Flavor Does This Product Contain?</h3>
+
+<p>The product has a naturally flavored pineapple profile. Each serving contains 750mg of Creatine HCl, with natural flavors and Stevia rebaudiana leaf extract as the other ingredients.</p>
+</article>
+
+<article class=""pd_faq_item""><span class=""pd_faq_no"">06</span>
+
+<h3>Is Private Label OEM and ODM Service Available?</h3>
+
+<p>Yes. Xinbada Industrial (Shenzhen) Group Co., Ltd. provides private label OEM and ODM service for sports nutrition brands. Packaging, branding, pricing, and minimum order requirements can be discussed based on the project.</p>
+</article>
+</div>
+</div>
+</section>
+</div>
+",

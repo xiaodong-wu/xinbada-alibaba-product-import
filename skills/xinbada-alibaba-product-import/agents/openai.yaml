@@ -1,0 +1,4 @@
+interface:
+  display_name: "Xinbada 阿里产品导入"
+  short_description: "抓取阿里产品资料，生成 Xinbada 商品内容、SEO 字段与改品牌组图"
+  default_prompt: "使用 $xinbada-alibaba-product-import 处理表格中的阿里产品链接，生成完整导入数据和 Xinbada 品牌组图。"
