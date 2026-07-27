@@ -41,6 +41,21 @@ FAQ_RE = re.compile(
     r"<article\b[^>]*\bclass\s*=\s*([\"'])[^\"']*\bpd_faq_item\b[^\"']*\1",
     re.IGNORECASE,
 )
+PARAMETER_PREFIX_RE = re.compile(r"^\s*(?:[•●▪◦‣⁃*+-]|\d+[.)])\s*")
+IMAGE_EXTENSIONS = {
+    ".avif",
+    ".bmp",
+    ".gif",
+    ".jpeg",
+    ".jpg",
+    ".png",
+    ".tif",
+    ".tiff",
+    ".webp",
+}
+CJK_RE = re.compile(
+    r"[\u3400-\u4dbf\u4e00-\u9fff\U00020000-\U0002fa1f]"
+)
 
 
 def class_element(html: str, class_name: str) -> str | None:
@@ -97,8 +112,11 @@ def validate_row(
         return
 
     for field in GENERATED_FIELDS:
-        if not (row.get(field) or "").strip():
+        value = row.get(field) or ""
+        if not value.strip():
             add(errors, row_number, f"{field} is empty")
+        elif CJK_RE.search(value):
+            add(errors, row_number, f"{field} contains Chinese text; use English only")
 
     title = row.get("title") or ""
     remark = row.get("remark") or ""
@@ -115,12 +133,16 @@ def validate_row(
     if slug and not SLUG_RE.fullmatch(slug):
         add(errors, row_number, "file_name must be lowercase ASCII kebab-case")
 
-    bullets = [line for line in parameters if line.strip()]
-    if bullets and not 4 <= len(bullets) <= 8:
-        add(errors, row_number, "parameter must contain 4–8 nonblank bullet lines")
-    for index, line in enumerate(bullets, 1):
-        if not line.startswith("• "):
-            add(errors, row_number, f"parameter line {index} must begin with '• '")
+    parameter_lines = [line.strip() for line in parameters if line.strip()]
+    if parameter_lines and not 4 <= len(parameter_lines) <= 8:
+        add(errors, row_number, "parameter must contain 4–8 nonblank plain-text lines")
+    for index, line in enumerate(parameter_lines, 1):
+        if PARAMETER_PREFIX_RE.match(line):
+            add(
+                errors,
+                row_number,
+                f"parameter line {index} must not begin with a bullet, dash, or number",
+            )
 
     if content:
         if COMPANY_NAME not in content:
@@ -151,14 +173,12 @@ def validate_row(
 
     if images_dir and slug:
         product_dir = images_dir / slug
-        image_files = []
+        image_files: list[Path] = []
         if product_dir.is_dir():
             image_files = [
                 path
                 for path in product_dir.iterdir()
-                if path.is_file()
-                and path.suffix.lower()
-                in {".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"}
+                if path.is_file() and path.suffix.lower() in IMAGE_EXTENSIONS
             ]
         if not image_files:
             message = f"no gallery images found in {product_dir}"
@@ -166,6 +186,28 @@ def validate_row(
                 add(errors, row_number, message)
             else:
                 warnings.append(f"row {row_number}: {message}")
+        else:
+            non_webp = [path.name for path in image_files if path.suffix.lower() != ".webp"]
+            if non_webp:
+                add(
+                    errors,
+                    row_number,
+                    "gallery folder contains non-WebP images: " + ", ".join(sorted(non_webp)),
+                )
+            for path in image_files:
+                if path.suffix.lower() != ".webp":
+                    continue
+                try:
+                    signature = path.read_bytes()[:12]
+                except OSError as exc:
+                    add(errors, row_number, f"cannot read gallery image {path.name}: {exc}")
+                    continue
+                if not (
+                    len(signature) == 12
+                    and signature[:4] == b"RIFF"
+                    and signature[8:12] == b"WEBP"
+                ):
+                    add(errors, row_number, f"{path.name} is not a valid WebP file")
 
 
 def main() -> int:

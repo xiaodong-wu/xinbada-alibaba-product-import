@@ -6,8 +6,10 @@ It can:
 
 - extract product titles, detail copy, specification tables, and gallery images;
 - preserve the supplied HTML template, styling, image URLs, and protected company section;
-- generate English product content, six FAQs, metadata, SEO fields, and file-name slugs;
+- generate English-only product content, six FAQs, metadata, SEO fields, and file-name slugs without Chinese text;
 - replace visible Lifeworth branding in gallery images with Xinbada;
+- generate `parameter` as plain lines without leading bullet symbols;
+- convert every gallery image to compressed WebP;
 - validate the completed CSV before delivery.
 
 ## Install with Codex
@@ -35,7 +37,7 @@ The skill becomes available on the next Codex turn.
 Use $xinbada-alibaba-product-import to process this Alibaba product import CSV.
 ```
 
-The skill preserves the source file by default and writes a completed copy. Rebranded gallery images are saved under `images/<file_name>/` beside the output table.
+The skill preserves the source file by default and writes a completed copy. Rebranded gallery images are compressed at WebP quality 82 and saved under `images/<file_name>/` beside the output table.
 
 ## Repository layout
 
@@ -45,7 +47,20 @@ skills/xinbada-alibaba-product-import/
 ├── agents/openai.yaml
 ├── assets/content_import_template.csv
 ├── references/schema-and-guardrails.md
+├── scripts/convert_images_to_webp.py
 └── scripts/validate_output.py
+```
+
+Image conversion requires [Pillow](https://pypi.org/project/pillow/).
+
+## Convert gallery images
+
+```bash
+python3 skills/xinbada-alibaba-product-import/scripts/convert_images_to_webp.py \
+  /absolute/path/to/staged/product-images \
+  --output-dir /absolute/path/to/images/<file_name> \
+  --quality 82 \
+  --method 6
 ```
 
 ## Validate

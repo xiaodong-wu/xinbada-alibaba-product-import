@@ -1,6 +1,6 @@
 ---
 name: xinbada-alibaba-product-import
-description: Extract product titles, detail copy, specification tables, and gallery images from Alibaba product links in CSV import sheets; transform the supplied HTML template into English Xinbada product content; generate title, remark, parameter, SEO, and file-name fields; replace visible Lifeworth branding in gallery images; and validate the completed import file. Use for Xinbada Alibaba-to-CSV product migrations, especially tables containing the fields link, template, content, title, remark, parameter, seo_title1, seo_desc, and file_name.
+description: Extract product titles, detail copy, specification tables, and gallery images from Alibaba product links in CSV import sheets; transform the supplied HTML template into English-only Xinbada product content with no Chinese text; generate title, remark, parameter, SEO, and file-name fields; replace visible Lifeworth branding; convert and compress gallery images to WebP; and validate the completed import file. Use for Xinbada Alibaba-to-CSV product migrations, especially tables containing the fields link, template, content, title, remark, parameter, seo_title1, seo_desc, and file_name.
 ---
 
 # Xinbada Alibaba Product Import
@@ -11,6 +11,7 @@ Process every populated row independently. Preserve source facts, template struc
 
 - Read [references/schema-and-guardrails.md](references/schema-and-guardrails.md) before editing a table.
 - Use [assets/content_import_template.csv](assets/content_import_template.csv) when the user needs a fresh import sheet.
+- Run `scripts/convert_images_to_webp.py` to create compressed WebP gallery images.
 - Run `scripts/validate_output.py` against the completed CSV before delivery.
 
 ## Workflow
@@ -50,11 +51,11 @@ Process every populated row independently. Preserve source facts, template struc
 
 ### 4. Generate import fields
 
-Generate all values in English:
+Generate all values in English only. Do not include Chinese characters in any generated field, including `content`.
 
 - `title`: Use `Xinbada` + commercial product name + relevant OEM/ODM, flavor, form, or category terms. Keep it readable and fact-grounded.
 - `remark`: Write one or two concise sentences describing the formula, serving or pack facts, use positioning, and private-label relevance.
-- `parameter`: Write 4–8 separate lines, each beginning with `• `. Include only verified differentiators and specifications.
+- `parameter`: Write 4–8 separate plain-text lines with no leading bullet, dot, dash, or numbering. Include only verified differentiators and specifications.
 - `file_name`: Convert the title to a lowercase ASCII kebab-case slug without an extension. Keep meaningful product and private-label keywords.
 - `seo_title1`: Copy `title` exactly.
 - `seo_desc`: Copy `remark` exactly.
@@ -66,8 +67,20 @@ Do not populate `thumb` unless the user supplies a mapping rule.
 1. Download every ordered gallery image from the Alibaba product page.
 2. Inspect each image. Invoke `$imagegen` for image editing when visible `Lifeworth` branding appears.
 3. Replace only the visible brand text/logo with `Xinbada`. Preserve the product, label geometry, typography character, colors, lighting, composition, aspect ratio, and resolution as closely as possible.
-4. Save every final gallery image, including unchanged images, under `images/<file_name>/` beside the output table. Use ordered names such as `01.webp`, `02.webp`, and so on; retain the source format when practical.
-5. Do not replace the image URLs inside `content`; template image sources are immutable.
+4. Keep downloads and edited source files in a temporary staging directory with ordered stems such as `01`, `02`, and so on.
+5. Convert every final image to compressed WebP with quality `82` and method `6`. Preserve pixel dimensions, aspect ratio, orientation, and transparency; strip unnecessary metadata.
+6. Write only `.webp` files under `images/<file_name>/` beside the output table. Use ordered names such as `01.webp`, `02.webp`, and so on. Do not leave JPEG, PNG, AVIF, GIF, or other source formats in the final product folder.
+7. Do not replace the image URLs inside `content`; template image sources are immutable.
+
+Run:
+
+```bash
+python3 scripts/convert_images_to_webp.py \
+  /absolute/path/to/staged/product-images \
+  --output-dir /absolute/path/to/images/<file_name> \
+  --quality 82 \
+  --method 6
+```
 
 Use this image-edit prompt as a starting point:
 
@@ -88,7 +101,9 @@ Fix every error before delivery. Review warnings against the source page. Report
 ## Quality rules
 
 - Prefer exact source facts over persuasive embellishment.
+- Keep every generated field entirely in English; reject and rewrite any Chinese text.
 - Avoid disease-treatment claims, unsupported performance promises, and unsupported certifications.
 - Keep product naming consistent across `title`, `content`, FAQ, parameters, and image-folder slug.
+- Keep every delivered gallery image in compressed WebP format.
 - Escape CSV fields correctly; HTML may contain commas, quotes, and newlines.
 - Preserve row order and UTF-8 encoding.
