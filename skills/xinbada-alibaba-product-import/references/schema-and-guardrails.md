@@ -9,11 +9,13 @@
 | `content` | Completed HTML derived from `template`. |
 | `title` | Xinbada English commercial product title. |
 | `remark` | Concise English product description. |
-| `parameter` | 4–8 verified plain-text lines without a leading bullet, dot, dash, or number. |
+| `pro_fields` | 4–8 verified plain-text lines without a leading bullet, dot, dash, or number. |
 | `file_name` | Lowercase ASCII kebab-case slug without extension. |
 | `seo_title1` | Exact copy of `title`. |
 | `seo_desc` | Exact copy of `remark`. |
-| `thumb` | Preserve unless the user provides a rule. |
+| `thumb` | One ImgBB Direct link for the product-cover WebP. |
+| `scenario_image` | One ImgBB Direct link for the scene or lifestyle WebP; store a plain URL, not Markdown. |
+| `images` | Ordered gallery lines formatted as `<ImgBB Direct link>|<English alt text>`. |
 
 Required brand values:
 
@@ -23,7 +25,7 @@ Required brand values:
 Language rule:
 
 - Write every generated field in English only.
-- Do not include Chinese characters in `title`, `remark`, `content`, `seo_title1`, `seo_desc`, `file_name`, or `parameter`.
+- Do not include Chinese characters in `title`, `remark`, `content`, `seo_title1`, `seo_desc`, `file_name`, `pro_fields`, `thumb`, `scenario_image`, or `images`.
 - Preserve `link` and `template` as source fields; do not translate or rewrite them.
 
 ## Template edit boundary
@@ -33,18 +35,18 @@ Treat the row's `template` as the canonical layout.
 Keep unchanged:
 
 - the complete `<style>` block;
-- every image `src` already in the template;
 - all classes, module order, nesting, layout, and colors;
-- the complete `<article class="pd_story_feature">…</article>` company introduction;
-- gallery images as external files only; never insert their local paths into `content`.
+- all company-introduction text and markup inside `<article class="pd_story_feature">…</article>`, except its image `src`;
+- the number and order of `<img>` elements.
 
 Edit:
 
 - product names, descriptions, specifications, benefits, formula facts, and product-facing tags;
 - product-facing `Lifeworth` text, replacing it with `Xinbada`;
 - the FAQ heading, introduction, and exactly six `.pd_faq_item` question/answer pairs.
+- every `<img src>` value, replacing it with a contextually suitable ImgBB Direct link from the row's image fields.
 
-The protected `.pd_story_feature` boundary resolves the source instruction about keeping the company-introduction image and text unchanged while still allowing the product-specific story tiles in the same larger section to be updated.
+Never insert local paths, old template image URLs, viewer links, or unrelated images into `content`.
 
 ## Content evidence rules
 
@@ -75,7 +77,7 @@ Xinbada Private Label Creatine HCl Powder OEM ODM Pineapple Flavored Sports Nutr
 remark:
 A pineapple-flavored creatine hydrochloride powder featuring a compact 960mg serving and 750mg of Creatine HCl per serving. Designed for private label sports nutrition products focused on strength, power, high-intensity performance, and recovery.
 
-parameter:
+pro_fields:
 Superior solubility and high absorption rate
 Less than 1g per serving for an effective compact serving format
 Gentle on the stomach compared with creatine monohydrate
@@ -96,3 +98,19 @@ Use the style, not unsupported facts, when processing other products.
 - Preserve original pixel dimensions, aspect ratio, orientation, and transparency.
 - Save only ordered `.webp` files in `images/<file_name>/`.
 - Do not retain JPEG, PNG, AVIF, GIF, TIFF, BMP, or other source formats in the final folder.
+
+## ImgBB upload and field mapping
+
+- Official API documentation: <https://api.imgbb.com/>
+- Use `POST https://api.imgbb.com/1/upload` with multipart form data.
+- Read the API key only from the `IMGBB_API_KEY` environment variable.
+- Enforce ImgBB's 32 MB maximum before sending each image.
+- Upload WebP files without expiration.
+- Read the Direct link from response field `data.url`.
+- Accept only URLs with scheme `https`, host `i.ibb.co`, and a `.webp` path.
+- Do not store or expose `delete_url`, the API key, or request bodies.
+- Store `thumb` and `scenario_image` as one plain Direct URL each.
+- Store `images` as newline-separated `<url>|<alt>` entries. Keep every alt value in English.
+- Do not use ImgBB viewer links, Markdown links, local paths, or URLs from `thumb`/`medium` response objects.
+- Replace every `content` image source with a suitable URL from `thumb`, `scenario_image`, or `images`.
+- Preserve the template's image count and order. Match cover, scene, product, formula, supplement-facts, factory, laboratory, and certification visuals to their corresponding modules.
