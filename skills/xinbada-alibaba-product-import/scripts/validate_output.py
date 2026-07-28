@@ -21,6 +21,7 @@ REQUIRED_HEADERS = {
     "file_name",
     "link",
     "template",
+    "IMGBB_API_KEY",
     "pro_fields",
     "scenario_image",
     "images",
@@ -64,42 +65,45 @@ CJK_RE = re.compile(
 )
 
 
-def class_element(html: str, class_name: str) -> str | None:
-    """Return the first complete element containing class_name."""
-    opener = re.compile(
-        rf"<(?P<tag>[a-z][a-z0-9]*)\b"
-        rf"(?=[^>]*\bclass\s*=\s*([\"'])[^\"']*\b{re.escape(class_name)}\b[^\"']*\2)"
-        rf"[^>]*>",
-        re.IGNORECASE,
-    ).search(html)
-    if not opener:
-        return None
-
-    tag = opener.group("tag")
+def element_ranges(html: str, tag: str) -> list[tuple[int, int]]:
+    """Return balanced ranges for all elements with a given tag."""
     token_re = re.compile(rf"</?{re.escape(tag)}\b[^>]*>", re.IGNORECASE)
-    depth = 0
-    for token in token_re.finditer(html, opener.start()):
+    stack: list[int] = []
+    ranges: list[tuple[int, int]] = []
+    for token in token_re.finditer(html):
         raw = token.group(0)
         if raw.startswith("</"):
-            depth -= 1
-            if depth == 0:
-                return html[opener.start() : token.end()]
+            if stack:
+                ranges.append((stack.pop(), token.end()))
         elif not raw.rstrip().endswith("/>"):
-            depth += 1
-    return None
+            stack.append(token.start())
+    return ranges
+
+
+def product_details_section(html: str) -> str | None:
+    """Return the complete section that contains pd_story_feature."""
+    marker = re.search(
+        r"<[a-z][a-z0-9]*\b"
+        r"(?=[^>]*\bclass\s*=\s*([\"'])[^\"']*\bpd_story_feature\b[^\"']*\1)"
+        r"[^>]*>",
+        html,
+        re.IGNORECASE,
+    )
+    if not marker:
+        return None
+    containing = [
+        item
+        for item in element_ranges(html, "section")
+        if item[0] <= marker.start() < item[1]
+    ]
+    if not containing:
+        return None
+    start, end = min(containing, key=lambda item: item[1] - item[0])
+    return html[start:end]
 
 
 def image_sources(html: str) -> list[str]:
     return [match.group(3) for match in IMG_SRC_RE.finditer(html)]
-
-
-def normalize_image_sources(html: str) -> str:
-    return IMG_SRC_RE.sub(
-        lambda match: (
-            f"{match.group(1)}{match.group(2)}__IMAGE_SRC__{match.group(2)}"
-        ),
-        html,
-    )
 
 
 def is_imgbb_webp_url(value: str) -> bool:
@@ -139,17 +143,24 @@ def validate_row(
     if not template.strip():
         add(errors, row_number, "template is empty")
         return
+    if not (row.get("IMGBB_API_KEY") or "").strip():
+        add(errors, row_number, "IMGBB_API_KEY is empty")
 
+    content = row.get("content") or ""
+    protected_content = product_details_section(content)
     for field in GENERATED_FIELDS:
         value = row.get(field) or ""
         if not value.strip():
             add(errors, row_number, f"{field} is empty")
+        elif field == "content" and protected_content:
+            editable_content = value.replace(protected_content, "", 1)
+            if CJK_RE.search(editable_content):
+                add(errors, row_number, f"{field} contains Chinese text; use English only")
         elif CJK_RE.search(value):
             add(errors, row_number, f"{field} contains Chinese text; use English only")
 
     title = row.get("title") or ""
     remark = row.get("remark") or ""
-    content = row.get("content") or ""
     slug = (row.get("file_name") or "").strip()
     pro_fields = (row.get("pro_fields") or "").splitlines()
 
@@ -209,7 +220,12 @@ def validate_row(
     if content:
         if COMPANY_NAME not in content:
             add(errors, row_number, "content is missing the required company name")
-        if re.search(r"lifeworth", content, re.IGNORECASE):
+        editable_content = (
+            content.replace(protected_content, "", 1)
+            if protected_content
+            else content
+        )
+        if re.search(r"lifeworth", editable_content, re.IGNORECASE):
             add(errors, row_number, "content still contains Lifeworth branding")
 
         template_style = STYLE_RE.search(template)
@@ -227,31 +243,36 @@ def validate_row(
                 row_number,
                 "content must preserve the template image count and order",
             )
+        if len(content_images) < 2:
+            add(errors, row_number, "content must contain at least two product images")
         for index, url in enumerate(content_images, 1):
-            if not is_imgbb_webp_url(url):
+            if index <= 2 and not is_imgbb_webp_url(url):
                 add(
                     errors,
                     row_number,
-                    f"content image {index} is not an ImgBB WebP Direct link",
+                    f"content image {index} must be an ImgBB WebP Direct link",
                 )
-            elif url not in allowed_image_urls:
+            elif index <= 2 and url not in allowed_image_urls:
                 add(
                     errors,
                     row_number,
                     f"content image {index} is not listed in thumb, scenario_image, or images",
                 )
+            elif index > 2 and index <= len(template_images) and url != template_images[index - 1]:
+                add(
+                    errors,
+                    row_number,
+                    f"content image {index} must remain unchanged from template",
+                )
 
-        protected_template = class_element(template, "pd_story_feature")
-        protected_content = class_element(content, "pd_story_feature")
+        protected_template = product_details_section(template)
         if not protected_template or not protected_content:
-            add(errors, row_number, "protected pd_story_feature block is missing")
-        elif normalize_image_sources(protected_template) != normalize_image_sources(
-            protected_content
-        ):
+            add(errors, row_number, "protected Product Details section is missing")
+        elif protected_template != protected_content:
             add(
                 errors,
                 row_number,
-                "protected pd_story_feature changed beyond its image src",
+                "protected Product Details section must remain byte-for-byte unchanged",
             )
 
         faq_count = len(FAQ_RE.findall(content))

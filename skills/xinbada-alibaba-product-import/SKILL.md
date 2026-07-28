@@ -1,11 +1,11 @@
 ---
 name: xinbada-alibaba-product-import
-description: Extract product titles, detail copy, specification tables, and gallery images from Alibaba product links in CSV import sheets; transform the supplied HTML template into English-only Xinbada product content; generate title, remark, pro_fields, SEO, and file-name fields; replace visible Lifeworth branding; convert and compress images to WebP; upload images to ImgBB by API; fill thumb, scenario_image, and images with ImgBB direct links; and validate the completed import file. Use for Xinbada Alibaba-to-CSV product migrations with link, template, content, title, remark, pro_fields, seo_title1, seo_desc, file_name, thumb, scenario_image, and images fields.
+description: Extract product titles, detail copy, specification tables, and gallery images from Alibaba product links in CSV import sheets; read each row's ImgBB key from IMGBB_API_KEY; transform editable HTML modules into English-only Xinbada content while preserving the Product Details section and all template images after the first two; generate title, remark, pro_fields, SEO, and file-name fields; replace visible Lifeworth branding in gallery images; convert and compress images to WebP; upload images to ImgBB by API; fill thumb, scenario_image, and images with ImgBB direct links; and validate the completed import file. Use for Xinbada Alibaba-to-CSV product migrations with link, template, IMGBB_API_KEY, content, title, remark, pro_fields, seo_title1, seo_desc, file_name, thumb, scenario_image, and images fields.
 ---
 
 # Xinbada Alibaba Product Import
 
-Process every populated row independently. Preserve source facts, template structure, and protected company content exactly.
+Process every populated row independently. Preserve source facts, template structure, and the protected Product Details section exactly.
 
 ## Required resources
 
@@ -19,9 +19,9 @@ Process every populated row independently. Preserve source facts, template struc
 
 ### 1. Inspect the table
 
-1. Identify the input CSV and verify its headers.
+1. Identify the input CSV and verify its headers, including `IMGBB_API_KEY`.
 2. Preserve the original file. Save to `<input-stem>_completed.csv` unless the user explicitly requests in-place editing or another output path.
-3. Preserve `link`, `template`, and unknown columns unless the user requests changes. Generate `thumb`, `scenario_image`, and `images`.
+3. Preserve `link`, `template`, `IMGBB_API_KEY`, and unknown columns unless the user requests changes. Generate `thumb`, `scenario_image`, and `images`.
 4. Process only rows with both `link` and `template`.
 
 ### 2. Collect source facts
@@ -43,16 +43,18 @@ Process every populated row independently. Preserve source facts, template struc
 3. Preserve the following byte-for-byte where practical:
    - the complete `<style>` block;
    - HTML classes, element order, nesting, layout, spacing behavior, and colors;
-   - the complete `.pd_story_feature` company-introduction article text and markup, except its image `src`.
-4. Replace only product-specific text in editable modules. Change every product-facing occurrence of `Lifeworth` or `LIFEWORTH` to `Xinbada`; do not alter source URLs in `link`.
-5. Use the brand `Xinbada` and company name `Xinbada Industrial (Shenzhen) Group Co., Ltd.`
-6. Replace the existing FAQ content with exactly six distinct, fact-grounded question-and-answer items. Keep the FAQ grid markup, item numbering `01` through `06`, styles, and layout.
-7. Keep the same number and order of `<img>` elements as the template. Replace their `src` values only after ImgBB upload.
-8. Keep the HTML self-contained: do not add JavaScript, external fonts, page-level CSS, markdown, or local image paths.
+   - the complete Product Details `<section>` that contains `.pd_story_feature`, including its heading, descriptive copy, company-introduction article, story tiles, image attributes, and every image `src`.
+4. Treat the protected Product Details section as an explicit exception to all text, branding, language, and image-replacement rules. Do not edit it even when its product name or image links belong to the original template.
+5. Replace only product-specific text in editable modules outside the protected Product Details section. Change every product-facing occurrence of `Lifeworth` or `LIFEWORTH` outside that section to `Xinbada`; do not alter source URLs in `link`.
+6. Use the brand `Xinbada` and company name `Xinbada Industrial (Shenzhen) Group Co., Ltd.` outside the protected Product Details section.
+7. Replace the existing FAQ content with exactly six distinct, fact-grounded question-and-answer items. Keep the FAQ grid markup, item numbering `01` through `06`, styles, and layout.
+8. Keep the same number and order of `<img>` elements as the template. After ImgBB upload, replace only the first two `<img src>` values in `content`.
+9. Preserve the third and every later `<img>` element byte-for-byte from `template`, including the original `src`, `alt`, and surrounding markup. These protected template links do not need ImgBB replacement.
+10. Keep the HTML self-contained: do not add JavaScript, external fonts, page-level CSS, markdown, or new local image paths.
 
 ### 4. Generate import fields
 
-Generate all values in English only. Do not include Chinese characters in any generated field, including `content`.
+Generate all editable values in English only. Do not include Chinese characters in any generated field, including editable parts of `content`. The protected Product Details section remains byte-for-byte unchanged even if its template text is not English.
 
 - `title`: Use `Xinbada` + commercial product name + relevant OEM/ODM, flavor, form, or category terms. Keep it readable and fact-grounded.
 - `remark`: Write one or two concise sentences describing the formula, serving or pack facts, use positioning, and private-label relevance.
@@ -87,8 +89,8 @@ Use this image-edit prompt as a starting point:
 
 ### 6. Upload images to ImgBB and fill image fields
 
-1. Read the ImgBB API key from `IMGBB_API_KEY`. Never print it, pass it as a command-line argument, write it to a file, or commit it.
-2. If `IMGBB_API_KEY` is missing, stop before upload and ask the user to set it in the environment.
+1. Read the ImgBB API key directly from the current row's `IMGBB_API_KEY` field in the CSV. Do not read it from an environment variable.
+2. If the field is missing or empty for a populated row, stop before upload and report only the row number. Never print, quote, or summarize the key value.
 3. Upload every final WebP through ImgBB API v1 with `POST https://api.imgbb.com/1/upload`. Do not set an expiration.
 4. Use only `data.url` from each successful response. Accept only HTTPS Direct links on `i.ibb.co`; do not use viewer, thumbnail, medium, delete, or Markdown links.
 5. Classify the uploaded images by visual role:
@@ -96,18 +98,20 @@ Use this image-edit prompt as a starting point:
    - `scenario_image`: the single scene or lifestyle-image Direct link, stored as a plain URL without Markdown brackets.
    - `images`: all product-gallery Direct links in display order, one per line as `<url>|<English alt text>`.
 6. Keep every alt text concise, descriptive, product-specific, and English only.
-7. Replace every existing image `src` inside `content` with a suitable uploaded Direct link from the row:
-   - use the cover image for the hero/product-overview module;
-   - use the scene image for lifestyle, use-case, or scenario modules;
-   - use matching product, formula, supplement-facts, factory, laboratory, or certification images for corresponding modules;
-   - preserve the original image count, order, surrounding markup, CSS, and protected company text.
-8. Use only links already written to `thumb`, `scenario_image`, or `images`. Do not retain old template image URLs or insert an unrelated image merely to fill a slot.
+7. Replace only the first two existing image `src` values inside `content`:
+   - use the cover image for the first hero/product-overview image;
+   - use the best matching uploaded product, comparison, scene, or use-case image for the second product-image module;
+   - use only links already written to `thumb`, `scenario_image`, or `images`;
+   - preserve image order, surrounding markup, CSS, and every attribute other than those two `src` values.
+8. Leave the third and every later content image unchanged from `template`. In particular, keep all Product Details image links and content exactly as supplied by the template.
 
 Run:
 
 ```bash
 python3 scripts/upload_images_to_imgbb.py \
   /absolute/path/to/images/<file_name> \
+  --csv-file /absolute/path/to/input.csv \
+  --row-number 2 \
   --manifest /absolute/path/to/upload-manifests/<file_name>.json
 ```
 
@@ -128,12 +132,13 @@ Fix every error before delivery. Review warnings against the source page. Report
 ## Quality rules
 
 - Prefer exact source facts over persuasive embellishment.
-- Keep every generated field entirely in English; reject and rewrite any Chinese text.
+- Keep every generated field entirely in English; reject and rewrite any Chinese text outside the protected Product Details section.
 - Avoid disease-treatment claims, unsupported performance promises, and unsupported certifications.
 - Keep product naming consistent across `title`, `content`, FAQ, `pro_fields`, image alt text, and image-folder slug.
 - Keep every delivered gallery image in compressed WebP format.
 - Use ImgBB `data.url` Direct links for `thumb`, `scenario_image`, and `images`.
-- Replace every `content` image `src` with a contextually suitable Direct link from those image fields while preserving the template structure.
-- Never persist the ImgBB API key in a table, manifest, source file, log, or Git history.
+- Replace only the first two `content` image `src` values with suitable Direct links from those image fields.
+- Preserve the complete Product Details section and the third and every later content image exactly as they appear in `template`.
+- Treat `IMGBB_API_KEY` as a sensitive read-only input column. Preserve it only in the user's CSV; never copy it into generated fields, manifests, logs, source files, responses, or Git history.
 - Escape CSV fields correctly; HTML may contain commas, quotes, and newlines.
 - Preserve row order and UTF-8 encoding.
