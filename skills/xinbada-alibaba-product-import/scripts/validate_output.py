@@ -8,6 +8,7 @@ import csv
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 REQUIRED_HEADERS = {
@@ -20,28 +21,33 @@ REQUIRED_HEADERS = {
     "file_name",
     "link",
     "template",
-    "parameter",
+    "pro_fields",
+    "scenario_image",
+    "images",
 }
 GENERATED_FIELDS = (
     "title",
     "remark",
+    "thumb",
     "content",
     "seo_title1",
     "seo_desc",
     "file_name",
-    "parameter",
+    "pro_fields",
+    "scenario_image",
+    "images",
 )
 COMPANY_NAME = "Xinbada Industrial (Shenzhen) Group Co., Ltd."
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 IMG_SRC_RE = re.compile(
-    r"<img\b[^>]*?\bsrc\s*=\s*([\"'])(.*?)\1", re.IGNORECASE | re.DOTALL
+    r"(<img\b[^>]*?\bsrc\s*=\s*)([\"'])(.*?)\2", re.IGNORECASE | re.DOTALL
 )
 STYLE_RE = re.compile(r"<style\b[^>]*>.*?</style>", re.IGNORECASE | re.DOTALL)
 FAQ_RE = re.compile(
     r"<article\b[^>]*\bclass\s*=\s*([\"'])[^\"']*\bpd_faq_item\b[^\"']*\1",
     re.IGNORECASE,
 )
-PARAMETER_PREFIX_RE = re.compile(r"^\s*(?:[•●▪◦‣⁃*+-]|\d+[.)])\s*")
+PRO_FIELDS_PREFIX_RE = re.compile(r"^\s*(?:[•●▪◦‣⁃*+-]|\d+[.)])\s*")
 IMAGE_EXTENSIONS = {
     ".avif",
     ".bmp",
@@ -84,7 +90,30 @@ def class_element(html: str, class_name: str) -> str | None:
 
 
 def image_sources(html: str) -> list[str]:
-    return [match.group(2) for match in IMG_SRC_RE.finditer(html)]
+    return [match.group(3) for match in IMG_SRC_RE.finditer(html)]
+
+
+def normalize_image_sources(html: str) -> str:
+    return IMG_SRC_RE.sub(
+        lambda match: (
+            f"{match.group(1)}{match.group(2)}__IMAGE_SRC__{match.group(2)}"
+        ),
+        html,
+    )
+
+
+def is_imgbb_webp_url(value: str) -> bool:
+    try:
+        parsed = urlparse(value)
+    except ValueError:
+        return False
+    return (
+        parsed.scheme.lower() == "https"
+        and (parsed.hostname or "").lower() == "i.ibb.co"
+        and parsed.path.lower().endswith(".webp")
+        and not parsed.username
+        and not parsed.password
+    )
 
 
 def add(errors: list[str], row_number: int, message: str) -> None:
@@ -122,7 +151,7 @@ def validate_row(
     remark = row.get("remark") or ""
     content = row.get("content") or ""
     slug = (row.get("file_name") or "").strip()
-    parameters = (row.get("parameter") or "").splitlines()
+    pro_fields = (row.get("pro_fields") or "").splitlines()
 
     if row.get("seo_title1") != title:
         add(errors, row_number, "seo_title1 must exactly equal title")
@@ -133,16 +162,49 @@ def validate_row(
     if slug and not SLUG_RE.fullmatch(slug):
         add(errors, row_number, "file_name must be lowercase ASCII kebab-case")
 
-    parameter_lines = [line.strip() for line in parameters if line.strip()]
-    if parameter_lines and not 4 <= len(parameter_lines) <= 8:
-        add(errors, row_number, "parameter must contain 4–8 nonblank plain-text lines")
-    for index, line in enumerate(parameter_lines, 1):
-        if PARAMETER_PREFIX_RE.match(line):
+    pro_field_lines = [line.strip() for line in pro_fields if line.strip()]
+    if pro_field_lines and not 4 <= len(pro_field_lines) <= 8:
+        add(errors, row_number, "pro_fields must contain 4–8 nonblank plain-text lines")
+    for index, line in enumerate(pro_field_lines, 1):
+        if PRO_FIELDS_PREFIX_RE.match(line):
             add(
                 errors,
                 row_number,
-                f"parameter line {index} must not begin with a bullet, dash, or number",
+                f"pro_fields line {index} must not begin with a bullet, dash, or number",
             )
+
+    allowed_image_urls: set[str] = set()
+    for field in ("thumb", "scenario_image"):
+        value = (row.get(field) or "").strip()
+        if value and not is_imgbb_webp_url(value):
+            add(
+                errors,
+                row_number,
+                f"{field} must be a plain ImgBB WebP Direct link on https://i.ibb.co/",
+            )
+        elif value:
+            allowed_image_urls.add(value)
+
+    gallery_lines = [
+        line.strip() for line in (row.get("images") or "").splitlines() if line.strip()
+    ]
+    for index, line in enumerate(gallery_lines, 1):
+        if "|" not in line:
+            add(errors, row_number, f"images line {index} must use '<url>|<alt>'")
+            continue
+        url, alt = (part.strip() for part in line.split("|", 1))
+        if not is_imgbb_webp_url(url):
+            add(
+                errors,
+                row_number,
+                f"images line {index} must use an ImgBB WebP Direct link",
+            )
+        else:
+            allowed_image_urls.add(url)
+        if not alt:
+            add(errors, row_number, f"images line {index} has an empty alt value")
+        elif CJK_RE.search(alt):
+            add(errors, row_number, f"images line {index} alt must be English only")
 
     if content:
         if COMPANY_NAME not in content:
@@ -157,15 +219,40 @@ def validate_row(
         elif template_style.group(0) != content_style.group(0):
             add(errors, row_number, "style block differs from template")
 
-        if image_sources(template) != image_sources(content):
-            add(errors, row_number, "template image src values or order changed")
+        template_images = image_sources(template)
+        content_images = image_sources(content)
+        if len(template_images) != len(content_images):
+            add(
+                errors,
+                row_number,
+                "content must preserve the template image count and order",
+            )
+        for index, url in enumerate(content_images, 1):
+            if not is_imgbb_webp_url(url):
+                add(
+                    errors,
+                    row_number,
+                    f"content image {index} is not an ImgBB WebP Direct link",
+                )
+            elif url not in allowed_image_urls:
+                add(
+                    errors,
+                    row_number,
+                    f"content image {index} is not listed in thumb, scenario_image, or images",
+                )
 
         protected_template = class_element(template, "pd_story_feature")
         protected_content = class_element(content, "pd_story_feature")
         if not protected_template or not protected_content:
             add(errors, row_number, "protected pd_story_feature block is missing")
-        elif protected_template != protected_content:
-            add(errors, row_number, "protected pd_story_feature block changed")
+        elif normalize_image_sources(protected_template) != normalize_image_sources(
+            protected_content
+        ):
+            add(
+                errors,
+                row_number,
+                "protected pd_story_feature changed beyond its image src",
+            )
 
         faq_count = len(FAQ_RE.findall(content))
         if faq_count != 6:

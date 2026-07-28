@@ -8,8 +8,10 @@ It can:
 - preserve the supplied HTML template, styling, image URLs, and protected company section;
 - generate English-only product content, six FAQs, metadata, SEO fields, and file-name slugs without Chinese text;
 - replace visible Lifeworth branding in gallery images with Xinbada;
-- generate `parameter` as plain lines without leading bullet symbols;
+- generate `pro_fields` as plain lines without leading bullet symbols;
 - convert every gallery image to compressed WebP;
+- upload WebP images to ImgBB through its API and fill `thumb`, `scenario_image`, and `images` with Direct links;
+- replace product-detail image sources with suitable uploaded ImgBB links while preserving the template layout;
 - validate the completed CSV before delivery.
 
 ## Install with Codex
@@ -48,6 +50,7 @@ skills/xinbada-alibaba-product-import/
 ├── assets/content_import_template.csv
 ├── references/schema-and-guardrails.md
 ├── scripts/convert_images_to_webp.py
+├── scripts/upload_images_to_imgbb.py
 └── scripts/validate_output.py
 ```
 
@@ -62,6 +65,18 @@ python3 skills/xinbada-alibaba-product-import/scripts/convert_images_to_webp.py 
   --quality 82 \
   --method 6
 ```
+
+## Upload images to ImgBB
+
+Set the ImgBB API key in the `IMGBB_API_KEY` environment variable. Never commit it or pass it on the command line.
+
+```bash
+python3 skills/xinbada-alibaba-product-import/scripts/upload_images_to_imgbb.py \
+  /absolute/path/to/images/<file_name> \
+  --manifest /absolute/path/to/upload-manifests/<file_name>.json
+```
+
+The uploader uses [ImgBB API v1](https://api.imgbb.com/), enforces the 32 MB limit, and records only `data.url` Direct links. The key and delete URLs are not written to the manifest.
 
 ## Validate
 
