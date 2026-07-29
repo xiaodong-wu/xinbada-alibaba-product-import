@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
-import os
 import re
 import secrets
 import sys
@@ -19,6 +19,7 @@ from urllib.request import Request, urlopen
 
 API_URL = "https://api.imgbb.com/1/upload"
 MAX_IMAGE_BYTES = 32_000_000
+API_KEY_FIELD = "IMGBB_API_KEY"
 
 
 def natural_key(path: Path) -> list[tuple[int, int | str]]:
@@ -63,6 +64,30 @@ def collect_images(image_dir: Path) -> list[Path]:
         if not is_webp(path):
             raise ValueError(f"{path.name} does not contain valid WebP data")
     return images
+
+
+def read_api_key(csv_file: Path, row_number: int) -> str:
+    if not csv_file.is_file():
+        raise ValueError(f"CSV file not found: {csv_file}")
+    if row_number < 2:
+        raise ValueError("CSV row number must be 2 or greater")
+
+    with csv_file.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        headers = reader.fieldnames or []
+        if API_KEY_FIELD not in headers:
+            raise ValueError(f"CSV is missing required field {API_KEY_FIELD}")
+        for current_row, row in enumerate(reader, start=2):
+            if current_row != row_number:
+                continue
+            api_key = (row.get(API_KEY_FIELD) or "").strip()
+            if not api_key:
+                raise ValueError(
+                    f"CSV row {row_number} has an empty {API_KEY_FIELD} field"
+                )
+            return api_key
+
+    raise ValueError(f"CSV row {row_number} does not exist")
 
 
 def multipart_body(api_key: str, image_path: Path) -> tuple[bytes, str]:
@@ -213,9 +238,16 @@ def main() -> int:
         help="Optional JSON output path for public Direct-link metadata",
     )
     parser.add_argument(
-        "--api-key-env",
-        default="IMGBB_API_KEY",
-        help="Environment variable containing the API key (default: IMGBB_API_KEY)",
+        "--csv-file",
+        type=Path,
+        required=True,
+        help=f"CSV containing the per-row {API_KEY_FIELD} field",
+    )
+    parser.add_argument(
+        "--row-number",
+        type=int,
+        required=True,
+        help="One-based CSV data-row number whose ImgBB key should be used",
     )
     parser.add_argument(
         "--timeout",
@@ -244,13 +276,8 @@ def main() -> int:
         parser.error(
             f"manifest already exists: {args.manifest}; pass --force to replace it"
         )
-    api_key = os.environ.get(args.api_key_env, "").strip()
-    if not api_key:
-        parser.error(
-            f"missing ImgBB API key in environment variable {args.api_key_env}"
-        )
-
     try:
+        api_key = read_api_key(args.csv_file, args.row_number)
         images = collect_images(args.image_dir)
     except ValueError as exc:
         parser.error(str(exc))

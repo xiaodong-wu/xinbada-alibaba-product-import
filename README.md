@@ -5,13 +5,13 @@ A Codex skill that turns Alibaba product links in a CSV import sheet into Xinbad
 It can:
 
 - extract product titles, detail copy, specification tables, and gallery images;
-- preserve the supplied HTML template, styling, image URLs, and protected company section;
+- preserve the complete Product Details section and all template images after the first two;
 - generate English-only product content, six FAQs, metadata, SEO fields, and file-name slugs without Chinese text;
 - replace visible Lifeworth branding in gallery images with Xinbada;
 - generate `pro_fields` as plain lines without leading bullet symbols;
 - convert every gallery image to compressed WebP;
 - upload WebP images to ImgBB through its API and fill `thumb`, `scenario_image`, and `images` with Direct links;
-- replace product-detail image sources with suitable uploaded ImgBB links while preserving the template layout;
+- replace only the first two product-detail image sources with suitable uploaded ImgBB links;
 - validate the completed CSV before delivery.
 
 ## Install with Codex
@@ -68,11 +68,13 @@ python3 skills/xinbada-alibaba-product-import/scripts/convert_images_to_webp.py 
 
 ## Upload images to ImgBB
 
-Set the ImgBB API key in the `IMGBB_API_KEY` environment variable. Never commit it or pass it on the command line.
+Add the ImgBB API key to the `IMGBB_API_KEY` field in each populated CSV row. The uploader reads that field directly and never prints the value or writes it to the upload manifest.
 
 ```bash
 python3 skills/xinbada-alibaba-product-import/scripts/upload_images_to_imgbb.py \
   /absolute/path/to/images/<file_name> \
+  --csv-file /absolute/path/to/input.csv \
+  --row-number 2 \
   --manifest /absolute/path/to/upload-manifests/<file_name>.json
 ```
 

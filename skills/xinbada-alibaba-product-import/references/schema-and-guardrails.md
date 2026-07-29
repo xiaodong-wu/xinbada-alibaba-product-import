@@ -6,6 +6,7 @@
 |---|---|
 | `link` | Alibaba source URL. Read only; preserve exactly. |
 | `template` | Per-row HTML source template. Read only; preserve exactly. |
+| `IMGBB_API_KEY` | Sensitive per-row ImgBB API key. Read only; preserve exactly and never expose it. |
 | `content` | Completed HTML derived from `template`. |
 | `title` | Xinbada English commercial product title. |
 | `remark` | Concise English product description. |
@@ -25,7 +26,8 @@ Required brand values:
 Language rule:
 
 - Write every generated field in English only.
-- Do not include Chinese characters in `title`, `remark`, `content`, `seo_title1`, `seo_desc`, `file_name`, `pro_fields`, `thumb`, `scenario_image`, or `images`.
+- Do not include Chinese characters in `title`, `remark`, editable parts of `content`, `seo_title1`, `seo_desc`, `file_name`, `pro_fields`, `thumb`, `scenario_image`, or `images`.
+- Preserve the protected Product Details section byte-for-byte even if it contains legacy or non-English template text.
 - Preserve `link` and `template` as source fields; do not translate or rewrite them.
 
 ## Template edit boundary
@@ -36,17 +38,17 @@ Keep unchanged:
 
 - the complete `<style>` block;
 - all classes, module order, nesting, layout, and colors;
-- all company-introduction text and markup inside `<article class="pd_story_feature">…</article>`, except its image `src`;
+- the complete Product Details `<section>` containing `.pd_story_feature`, including its heading, copy, company-introduction article, story tiles, image attributes, and original image links;
 - the number and order of `<img>` elements.
 
 Edit:
 
-- product names, descriptions, specifications, benefits, formula facts, and product-facing tags;
-- product-facing `Lifeworth` text, replacing it with `Xinbada`;
+- product names, descriptions, specifications, benefits, formula facts, and product-facing tags outside the protected Product Details section;
+- product-facing `Lifeworth` text outside the protected Product Details section, replacing it with `Xinbada`;
 - the FAQ heading, introduction, and exactly six `.pd_faq_item` question/answer pairs.
-- every `<img src>` value, replacing it with a contextually suitable ImgBB Direct link from the row's image fields.
+- only the first two `<img src>` values, replacing each with a contextually suitable ImgBB Direct link from the row's image fields.
 
-Never insert local paths, old template image URLs, viewer links, or unrelated images into `content`.
+Preserve the third and every later `<img>` element exactly as supplied by `template`. Do not change its `src`, `alt`, attributes, or surrounding markup. Never insert new local paths, viewer links, or unrelated images into editable content.
 
 ## Content evidence rules
 
@@ -62,10 +64,10 @@ When sources conflict, prefer the specification table for structured product att
 Do not:
 
 - import claims from unrelated or merely similar Alibaba listings;
-- include Chinese text in any generated field;
+- include Chinese text in any generated field outside the protected Product Details section;
 - turn marketing language into medical claims;
-- retain `Lifeworth` in generated product-facing copy;
-- change protected company text even to improve grammar;
+- retain `Lifeworth` in generated product-facing copy outside the protected Product Details section;
+- change any text, markup, attribute, or image link in the protected Product Details section;
 - claim OEM/ODM customization details that are not present, except the supplied positioning that Xinbada provides private-label OEM/ODM service.
 
 ## Example field style
@@ -103,14 +105,17 @@ Use the style, not unsupported facts, when processing other products.
 
 - Official API documentation: <https://api.imgbb.com/>
 - Use `POST https://api.imgbb.com/1/upload` with multipart form data.
-- Read the API key only from the `IMGBB_API_KEY` environment variable.
+- Read the API key only from the current CSV row's `IMGBB_API_KEY` field.
+- Require the field to be present and nonempty for every populated product row.
+- Preserve the value in the user's CSV, but never print it, quote it, pass it on the command line, copy it to another field, write it to a manifest, or commit it.
 - Enforce ImgBB's 32 MB maximum before sending each image.
 - Upload WebP files without expiration.
 - Read the Direct link from response field `data.url`.
 - Accept only URLs with scheme `https`, host `i.ibb.co`, and a `.webp` path.
-- Do not store or expose `delete_url`, the API key, or request bodies.
+- Do not store or expose `delete_url`, the API key outside its source CSV field, or request bodies.
 - Store `thumb` and `scenario_image` as one plain Direct URL each.
 - Store `images` as newline-separated `<url>|<alt>` entries. Keep every alt value in English.
 - Do not use ImgBB viewer links, Markdown links, local paths, or URLs from `thumb`/`medium` response objects.
-- Replace every `content` image source with a suitable URL from `thumb`, `scenario_image`, or `images`.
-- Preserve the template's image count and order. Match cover, scene, product, formula, supplement-facts, factory, laboratory, and certification visuals to their corresponding modules.
+- Replace only the first two `content` image sources with suitable URLs from `thumb`, `scenario_image`, or `images`.
+- Preserve the template's image count and order.
+- Keep the third and every later content image exactly as it appears in `template`, including all Product Details image sources and attributes.
