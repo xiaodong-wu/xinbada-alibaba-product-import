@@ -1,4 +1,4 @@
 interface:
-  display_name: "Xinbada 阿里产品导入"
+  display_name: "Xinbada Alibaba Product Import"
   short_description: "生成全英文商品数据、WebP 图片并上传 ImgBB"
   default_prompt: "使用 $xinbada-alibaba-product-import 处理阿里产品表格，生成全英文数据并把 WebP 图片上传到 ImgBB。"
